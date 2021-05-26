@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 15px;
+}
+
+* {
+  outline: none !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+*:active {
+  outline: none !important;
+}
