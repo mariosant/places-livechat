@@ -12,6 +12,8 @@
     "@livechat/design-system-themes": "^1.0.0",
     "@loadable/component": "^5.15.0",
     "@mariosant/cn": "^0.3.0",
+    "axios": "^0.21.1",
+    "faunadb": "^4.3.0",
     "preact": "^10.5.13",
     "preact-router": "^3.2.1",
     "zustand": "^3.5.1"
