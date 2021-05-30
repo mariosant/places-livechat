@@ -19,8 +19,6 @@ const fn = async (request, response) => {
     organization,
   };
 
-  console.log({ poi });
-
   response.json(poi);
 };
 
