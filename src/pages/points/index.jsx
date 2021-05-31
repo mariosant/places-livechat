@@ -6,6 +6,8 @@ import { PoiButton, SearchInput } from "@/components";
 
 const Page = () => {
   const [selected, setSelected] = useState(undefined);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const { sendPoint } = useWidget();
 
   const { data: response } = useSWR("/api/getPoints", {
@@ -13,6 +15,15 @@ const Page = () => {
   });
 
   const pois = response?.data ?? [];
+
+  const filteredPois =
+    searchQuery !== ""
+      ? pois.filter(
+          ({ address, title }) =>
+            title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            address.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : pois;
 
   const selectPoint =
     ({ title, address }) =>
@@ -31,14 +42,17 @@ const Page = () => {
     <div className="pt-12">
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between w-full p-2 bg-white">
         <div className="w-1/3">
-          <SearchInput />
+          <SearchInput
+            placeholder="Search by title or address"
+            onInput={(event) => setSearchQuery(event.target.value)}
+          />
         </div>
       </div>
 
       <div className="px-2 pb-2">
-        {pois.length > 0 && (
+        {filteredPois.length > 0 && (
           <div className="flex flex-wrap w-full gap-2">
-            {pois.map(({ title, address }) => (
+            {filteredPois.map(({ title, address }) => (
               <PoiButton
                 selected={isSelected({ title, address })}
                 onClick={selectPoint({ title, address })}
@@ -48,9 +62,15 @@ const Page = () => {
             ))}
           </div>
         )}
-        {pois.length === 0 && (
+        {pois.length === 0 && searchQuery === "" && (
           <span className="text-gray400">
             There are no points yet. Click on the menu button to add some.
+          </span>
+        )}
+
+        {pois.length === 0 && searchQuery !== "" && (
+          <span className="text-gray400">
+            No points. Perhaps make a broader search?
           </span>
         )}
       </div>

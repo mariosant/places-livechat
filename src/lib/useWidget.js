@@ -9,15 +9,20 @@ const useWidget = create((set, get) => ({
   },
   sendPoint: ({ title, address }) => {
     const { widget } = get();
+
     widget.putMessage({
+      template_id: "cards",
       elements: [
         {
-          title,
+          title: title,
+          subtitle: address,
           buttons: [
             {
-              text: "Open map",
               type: "url",
-              url: "https://maps.google.com",
+              text: "Open map",
+              postback_id: "open_map",
+              user_ids: [],
+              value: `https://maps.google.com?q=${address}`,
             },
           ],
         },
