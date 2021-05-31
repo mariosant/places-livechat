@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@livechat/accounts-sdk": "^2.0.2",
+    "@livechat/agent-app-sdk": "^1.5.1",
     "@livechat/design-system-colors": "^2.0.0",
     "@livechat/design-system-themes": "^1.0.0",
     "@loadable/component": "^5.15.0",
