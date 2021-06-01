@@ -1,16 +1,16 @@
 import loadable from "@loadable/component";
 import useAuth from "@/lib/useAuth";
-import useWidget from "@/lib/useWidget";
+import useMessagebox from "@/lib/useMessagebox";
 
-const Router = loadable(() => import("@/pages/points"));
+const Page = loadable(() => import("@/pages/points"));
 
 const App = () => {
   const { data } = useAuth();
-  const { initialize } = useWidget();
+  const { initialize } = useMessagebox();
 
   initialize();
 
-  return data ? <Router /> : null;
+  return data ? <Page /> : null;
 };
 
 export default App;
