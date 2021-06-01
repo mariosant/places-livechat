@@ -1,8 +1,6 @@
-import loadable from "@loadable/component";
-import useAuth from "@/lib/useAuth";
-import useMessagebox from "@/lib/useMessagebox";
-
-const Page = loadable(() => import("@/pages/points"));
+import useAuth from "@/lib/useAuth.js";
+import useMessagebox from "@/lib/useMessagebox.js";
+import Router from "@/router.jsx";
 
 const App = () => {
   const { data } = useAuth();
@@ -10,7 +8,7 @@ const App = () => {
 
   initialize();
 
-  return data ? <Page /> : null;
+  return data ? <Router /> : null;
 };
 
 export default App;

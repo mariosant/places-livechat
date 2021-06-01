@@ -1,9 +1,13 @@
+import loadable from "@loadable/component";
 import Router from "preact-router";
-import PointsPage from "@/pages/points";
+
+const PointsPage = loadable(() => import("@/pages/points"));
+const OptionsPage = loadable(() => import("@/pages/options"));
 
 export default () => (
   <Router>
-    <PointsPage path="/" />
+    <PointsPage path="/points" />
+    <OptionsPage path="/options" />
 
     <div default className="p-2">
       Not found
