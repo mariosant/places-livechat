@@ -48,13 +48,12 @@ const Form = ({ onSubmit: onSubmitCallback, currentData, ...props }) => {
   } = useForm();
 
   const onSubmit = async (point) => {
-    onSubmitCallback(point);
-
-    mutate("/api/getPoints", { data: [point, ...currentData] });
-
-    api.post("/api/createPoint", {
+    await api.post("/api/createPoint", {
       json: point,
     });
+
+    mutate("/api/getPoints", { data: [point, ...currentData] });
+    onSubmitCallback(point);
   };
 
   return (
