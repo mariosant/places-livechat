@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/options",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/points",
+      "destination": "/index.html"
+    }
+  ]
+}
