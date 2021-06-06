@@ -11,6 +11,7 @@ const Points = () => {
     data: { data: points },
   } = useSWR("/api/getPoints", {
     fetcher: (url) => api.get(url).json(),
+    initialData: { data: [] },
   });
 
   return (
@@ -23,7 +24,13 @@ const Points = () => {
       </div>
       {showForm && (
         <div className="border-t border-gray150">
-          <Form className="p-3" />
+          <Form
+            className="p-3"
+            onSubmit={() => {
+              setShowForm(false);
+            }}
+            currentData={points}
+          />
         </div>
       )}
       {points.map((point) => (

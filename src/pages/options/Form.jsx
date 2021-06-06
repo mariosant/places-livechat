@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import { mutate } from "swr";
+import api from "@/lib/api";
 
 const Label = ({ children, ...props }) => {
   return (
@@ -19,7 +21,12 @@ const Input = (props) => {
 
 const Button = ({ children, ...props }) => {
   return (
-    <button className="px-4 py-2 text-white rounded bg-blue700" {...props}>
+    <button
+      className={`px-4 py-2 text-white rounded ${
+        props.disabled ? "bg-gray300" : "bg-blue700"
+      }`}
+      {...props}
+    >
       {children}
     </button>
   );
@@ -33,13 +40,22 @@ const Error = ({ children, ...props }) => {
   );
 };
 
-const Form = (props) => {
+const Form = ({ onSubmit: onSubmitCallback, currentData, ...props }) => {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
-  const onSubmit = (values) => console.log({ values });
+
+  const onSubmit = async (point) => {
+    onSubmitCallback(point);
+
+    mutate("/api/getPoints", { data: [point, ...currentData] });
+
+    api.post("/api/createPoint", {
+      json: point,
+    });
+  };
 
   return (
     <form {...props} onSubmit={handleSubmit(onSubmit)}>
@@ -56,7 +72,7 @@ const Form = (props) => {
         {<Error>{errors?.title?.message}</Error>}
       </div>
 
-      <div className="mb-3">
+      <div className="mb-4">
         <Label>Address</Label>
         <Input
           autocomplete="off"
@@ -69,7 +85,9 @@ const Form = (props) => {
         {<Error>{errors?.address?.message}</Error>}
       </div>
 
-      <Button type="submit">Create</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Saving..." : "Save"}
+      </Button>
     </form>
   );
 };

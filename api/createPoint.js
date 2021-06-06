@@ -1,4 +1,5 @@
 const validateAuth = require("./utils/validateAuth");
+const { client, q } = require("./utils/db");
 
 const fn = async (request, response) => {
   const [{ account_id: user, organization_id: organization }, error] =
@@ -15,9 +16,11 @@ const fn = async (request, response) => {
   const poi = {
     title,
     address,
-    user,
     organization,
+    account: user,
   };
+
+  const r = await client.query(q.Create(q.Collection("pois"), { data: poi }));
 
   response.json(poi);
 };
