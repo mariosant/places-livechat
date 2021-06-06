@@ -9,7 +9,7 @@ const fn = async (request, response) => {
   }
 
   const query = q.Paginate(
-    q.Match(q.Index("pois_by_account"), user.account_id),
+    q.Match(q.Index("points_by_organization"), user.organization_id),
     {
       size: 100,
     }

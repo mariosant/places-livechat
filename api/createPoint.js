@@ -20,7 +20,7 @@ const fn = async (request, response) => {
     account: user,
   };
 
-  const r = await client.query(q.Create(q.Collection("pois"), { data: poi }));
+  const r = await client.query(q.Create(q.Collection("points"), { data: poi }));
 
   response.json(poi);
 };

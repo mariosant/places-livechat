@@ -7,11 +7,12 @@ import Form from "./Form.jsx";
 const Points = () => {
   const [showForm, setShowForm] = useState(false);
 
-  const {
-    data: { data: points },
-  } = useSWR("/api/getPoints", {
-    fetcher: (url) => api.get(url).json(),
-    initialData: { data: [] },
+  const { data: points } = useSWR("/api/getPoints", {
+    fetcher: (url) =>
+      api
+        .get(url)
+        .json()
+        .then(({ data }) => data),
   });
 
   return (
@@ -33,19 +34,33 @@ const Points = () => {
           />
         </div>
       )}
-      {points.map((point) => (
+      {!points && (
         <div className="flex justify-between p-3 border-t group border-gray150">
-          <div>
-            <div className="text">{point.title}</div>
-            <div className="text-gray400">{point.address}</div>
-          </div>
-          <div className="opacity-0 hiddes group-hover:opacity-100">
-            <button>
-              <TrashIcon className="w-5 h-5 text-red600" />
-            </button>
-          </div>
+          Loading points...
         </div>
-      ))}
+      )}
+
+      {points && points.length === 0 && (
+        <div className="flex justify-between p-3 border-t group border-gray150">
+          Seems there are no points yet. How about adding a few by clicking "Add
+          new"?
+        </div>
+      )}
+
+      {points &&
+        points?.map((point) => (
+          <div className="flex justify-between p-3 border-t group border-gray150">
+            <div>
+              <div className="text">{point?.title}</div>
+              <div className="text-gray400">{point?.address}</div>
+            </div>
+            <div className="opacity-0 hiddes group-hover:opacity-100">
+              <button>
+                <TrashIcon className="w-5 h-5 text-red600" />
+              </button>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };
