@@ -1,7 +1,9 @@
 import { useState } from "preact/hooks";
 import useSWR from "swr";
-import api from "@/lib/api";
 import { TrashIcon } from "@heroicons/react/outline";
+import api from "@/lib/api";
+import { DotsLoading } from "@/components";
+
 import Form from "./Form.jsx";
 
 const Points = () => {
@@ -54,11 +56,22 @@ const Points = () => {
               <div className="text">{point?.title}</div>
               <div className="text-gray400">{point?.address}</div>
             </div>
-            <div className="opacity-0 hiddes group-hover:opacity-100">
-              <button>
-                <TrashIcon className="w-5 h-5 text-red600" />
-              </button>
-            </div>
+            {point.pending && (
+              <div className="self-center flex-shrink">
+                <DotsLoading
+                  className="fill-current text-gray200"
+                  width="24"
+                  height="24"
+                />
+              </div>
+            )}
+            {!point.pending && (
+              <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
+                <button>
+                  <TrashIcon className="w-5 h-5 text-red600" />
+                </button>
+              </div>
+            )}
           </div>
         ))}
     </div>

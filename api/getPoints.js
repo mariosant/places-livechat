@@ -9,16 +9,18 @@ const fn = async (request, response) => {
   }
 
   const query = q.Paginate(
-    q.Match(q.Index("points_by_organization"), user.organization_id),
+    q.Match(q.Index("points_by_org_sorted"), user.organization_id),
     {
       size: 100,
     }
   );
 
-  const data = (await client.query(query)).data.map(([title, address]) => ({
-    title,
-    address,
-  }));
+  const data = (await client.query(query)).data
+    .map(([_, title, address]) => ({
+      title,
+      address,
+    }))
+    .reverse();
 
   response.json({
     data,

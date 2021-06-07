@@ -40,7 +40,7 @@ const Error = ({ children, ...props }) => {
   );
 };
 
-const Form = ({ onSubmit: onSubmitCallback, currentData, ...props }) => {
+const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
   const {
     handleSubmit,
     register,
@@ -48,12 +48,21 @@ const Form = ({ onSubmit: onSubmitCallback, currentData, ...props }) => {
   } = useForm();
 
   const onSubmit = async (point) => {
-    await api.post("/api/createPoint", {
-      json: point,
-    });
-
-    mutate("/api/getPoints", { data: [point, ...currentData] });
     onSubmitCallback(point);
+
+    mutate(
+      "/api/getPoints",
+      (currentPoints) => [{ ...point, pending: true }, ...currentPoints],
+      false
+    );
+
+    await api
+      .post("/api/createPoint", {
+        json: point,
+      })
+      .json();
+
+    mutate("/api/getPoints");
   };
 
   return (
