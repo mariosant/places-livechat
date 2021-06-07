@@ -32,7 +32,6 @@ const Points = () => {
             onSubmit={() => {
               setShowForm(false);
             }}
-            currentData={points}
           />
         </div>
       )}
