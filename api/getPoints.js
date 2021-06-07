@@ -16,9 +16,11 @@ const fn = async (request, response) => {
   );
 
   const data = (await client.query(query)).data
-    .map(([_, title, address]) => ({
+    .map(([createdAt, title, address, ref]) => ({
       title,
       address,
+      createdAt,
+      id: ref.id,
     }))
     .reverse();
 

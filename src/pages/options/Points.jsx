@@ -3,19 +3,33 @@ import useSWR from "swr";
 import { TrashIcon } from "@heroicons/react/outline";
 import api from "@/lib/api";
 import { DotsLoading } from "@/components";
-
 import Form from "./Form.jsx";
+import DeleteModal from "./DeleteModal.jsx";
 
 const Points = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showModal, setShowModal] = useState(undefined);
 
-  const { data: points } = useSWR("/api/getPoints", {
+  const { data: points, mutate } = useSWR("/api/getPoints", {
     fetcher: (url) =>
       api
         .get(url)
         .json()
         .then(({ data }) => data),
   });
+
+  const onDeletePoint = async ({ id }) => {
+    setShowModal(undefined);
+
+    mutate(
+      (currentPoints) => currentPoints.filter((point) => point.id !== id),
+      false
+    );
+
+    await api.post(`/api/deletePoint`, { json: { id } }).catch(() => mutate());
+
+    mutate();
+  };
 
   return (
     <div className="border rounded-large border-gray150">
@@ -66,13 +80,20 @@ const Points = () => {
             )}
             {!point.pending && (
               <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
-                <button>
+                <button onClick={() => setShowModal(point)}>
                   <TrashIcon className="w-5 h-5 text-red600" />
                 </button>
               </div>
             )}
           </div>
         ))}
+
+      <DeleteModal
+        open={Boolean(showModal)}
+        pointName={showModal?.title}
+        onClose={() => setShowModal(undefined)}
+        onConfirm={() => onDeletePoint(showModal)}
+      />
     </div>
   );
 };

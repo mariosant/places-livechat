@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     colors: {
       ...livechatColors,
+      black: "#000",
       inherit: "inherit",
       transparent: "transparent",
     },
