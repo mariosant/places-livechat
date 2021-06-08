@@ -14,8 +14,8 @@ const Page = () => {
     fetcher: (url) => api.get(url).json(),
   });
 
-  const isFetched = Boolean(response?.data);
-  const points = response?.data ?? [];
+  const isFetched = Boolean(response);
+  const points = response?.points ?? [];
 
   const filteredPoints =
     searchQuery !== ""

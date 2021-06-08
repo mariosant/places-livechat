@@ -1,5 +1,6 @@
+const { gql } = require("graphql-request");
 const validateAuth = require("./utils/validateAuth");
-const { client, q } = require("./utils/db");
+const mongoClient = require("./utils/mongoClient");
 
 const fn = async (request, response) => {
   const [user, error] = await validateAuth(request);
@@ -9,18 +10,18 @@ const fn = async (request, response) => {
   }
 
   const {
-    body: { id: pointId },
+    body: { _id: pointId },
   } = request;
 
-  const pointResult = await client.query(
-    q.Get(q.Ref(q.Collection("points"), pointId))
-  );
+  const query = gql`
+    mutation {
+      deleteOnePoint(query: {_id: "${pointId}", organization: "${user.organization_id}" }) {
+        _id
+      }
+    }
+  `;
 
-  if (pointResult.data.organization !== user.organization_id) {
-    return response.status(404).send("Not found");
-  }
-
-  await client.query(q.Delete(pointResult.ref));
+  await mongoClient.request(query);
 
   response.status(200).end();
 };

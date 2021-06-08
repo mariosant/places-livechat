@@ -15,18 +15,18 @@ const Points = () => {
       api
         .get(url)
         .json()
-        .then(({ data }) => data),
+        .then(({ points }) => points),
   });
 
-  const onDeletePoint = async ({ id }) => {
+  const onDeletePoint = async ({ _id }) => {
     setShowModal(undefined);
 
     mutate(
-      (currentPoints) => currentPoints.filter((point) => point.id !== id),
+      (currentPoints) => currentPoints.filter((point) => point._id !== _id),
       false
     );
 
-    await api.post(`/api/deletePoint`, { json: { id } }).catch(() => mutate());
+    await api.post(`/api/deletePoint`, { json: { _id } }).catch(() => mutate());
 
     mutate();
   };

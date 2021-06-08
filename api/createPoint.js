@@ -1,5 +1,6 @@
+const { gql } = require("graphql-request");
 const validateAuth = require("./utils/validateAuth");
-const { client, q } = require("./utils/db");
+const mongoClient = require("./utils/mongoClient");
 
 const fn = async (request, response) => {
   const [{ account_id: user, organization_id: organization }, error] =
@@ -13,16 +14,26 @@ const fn = async (request, response) => {
     body: { title, address },
   } = request;
 
-  const poi = {
-    title,
-    address,
-    organization,
-    account: user,
-  };
+  const query = gql`
+    mutation createPoint {
+      insertOnePoint(data: {
+        title: "${title}",
+        address: "${address}",
+        organization: "${organization}",
+        account: "${user}",
+        createdAt: "${new Date().toISOString()}"
+      }) {
+        _id,
+        title,
+        address,
+        createdAt
+      }
+    }
+  `;
 
-  const r = await client.query(q.Create(q.Collection("points"), { data: poi }));
+  const { insertOnePoint: point } = await mongoClient.request(query);
 
-  response.json(poi);
+  response.json(point);
 };
 
 module.exports = fn;

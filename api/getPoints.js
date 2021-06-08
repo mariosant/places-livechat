@@ -1,5 +1,7 @@
+const { gql } = require("graphql-request");
+
 const validateAuth = require("./utils/validateAuth");
-const { client, q } = require("./utils/db");
+const mongoClient = require("./utils/mongoClient");
 
 const fn = async (request, response) => {
   const [user, error] = await validateAuth(request);
@@ -8,25 +10,21 @@ const fn = async (request, response) => {
     return response.status(401).send("Unauthorized");
   }
 
-  const query = q.Paginate(
-    q.Match(q.Index("points_by_org_sorted"), user.organization_id),
-    {
-      size: 100,
+  const query = gql`
+  query {
+    points(limit: 5, sortBy: CREATEDAT_DESC, query: {organization: "${user.organization_id}"}) {
+      _id
+      account
+      address
+      organization
+      title
     }
-  );
+  }
+  `;
 
-  const data = (await client.query(query)).data
-    .map(([createdAt, title, address, ref]) => ({
-      title,
-      address,
-      createdAt,
-      id: ref.id,
-    }))
-    .reverse();
+  const data = await mongoClient.request(query);
 
-  response.json({
-    data,
-  });
+  response.json(data);
 };
 
 module.exports = fn;
