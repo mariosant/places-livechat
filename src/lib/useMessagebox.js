@@ -1,6 +1,8 @@
 import { createMessageBoxWidget } from "@livechat/agent-app-sdk";
 import create from "zustand";
 
+const { host } = window.location;
+
 const useWidget = create((set, get) => ({
   widget: {},
   initialize: async () => {
@@ -16,6 +18,9 @@ const useWidget = create((set, get) => ({
         {
           title: title,
           subtitle: address,
+          image: {
+            url: `https://${host}/api/map?location=${address}`,
+          },
           buttons: [
             {
               type: "url",
