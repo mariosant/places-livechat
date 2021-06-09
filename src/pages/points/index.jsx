@@ -44,7 +44,7 @@ const Page = () => {
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between w-full p-2 bg-white">
         <div className="w-1/3">
           <SearchInput
-            placeholder="Search by title or address"
+            placeholder="Search places by title"
             onInput={(event) => setSearchQuery(event.target.value)}
           />
         </div>
@@ -67,15 +67,17 @@ const Page = () => {
         )}
 
         {isFetched && points.length === 0 && searchQuery === "" && (
-          <span className="text-gray400">
-            There are no points added yet. Go to application options to add
-            some.
-          </span>
+          <p className="text-gray400">
+            There are no places added yet.
+            <br />
+            Go to LiveChat Settings &gt; Integrations &amp; Apps &gt; Places, to
+            add some.
+          </p>
         )}
 
         {isFetched && points.length === 0 && searchQuery !== "" && (
           <span className="text-gray400">
-            No points. Perhaps make a broader search?
+            No places found. Perhaps make a broader search?
           </span>
         )}
       </div>

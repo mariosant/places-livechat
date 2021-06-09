@@ -51,14 +51,14 @@ const Points = () => {
       )}
       {!points && (
         <div className="flex justify-between p-3 border-t group border-gray150">
-          Loading points...
+          Loading places...
         </div>
       )}
 
       {points && points.length === 0 && (
         <div className="flex justify-between p-3 border-t group border-gray150">
-          Seems there are no points yet. How about adding a few by clicking "Add
-          new"?
+          Seems there are no places added yet. How about adding a few by
+          clicking "Add new"?
         </div>
       )}
 
