@@ -1,11 +1,11 @@
 {
   "rewrites": [
     {
-      "source": "/options",
+      "source": "/settings",
       "destination": "/index.html"
     },
     {
-      "source": "/points",
+      "source": "/messagebox",
       "destination": "/index.html"
     }
   ]
