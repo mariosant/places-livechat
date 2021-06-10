@@ -8,13 +8,15 @@ import {
 import Form from "./Form.jsx";
 import DeleteModal from "./DeleteModal.jsx";
 
+const queryContext = { additionalTypenames: ["Point"] };
+
 const Points = () => {
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(undefined);
 
   const [{ data }] = useQuery({
     query: pointsQuery,
-    context: { additionalTypenames: ["Point"] },
+    context: queryContext,
   });
   const [, executeMutation] = useMutation(deletePointQuery);
 
