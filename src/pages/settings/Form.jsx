@@ -50,9 +50,8 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
   const [_, mutate] = useMutation(createPointQuery);
 
   const onSubmit = async ({ title, address }) => {
-    await mutate({ title, address });
-
     onSubmitCallback();
+    await mutate({ title, address });
   };
 
   return (

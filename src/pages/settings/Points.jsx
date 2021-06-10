@@ -1,7 +1,6 @@
 import { useState } from "preact/hooks";
 import { useQuery, useMutation } from "urql";
 import { TrashIcon } from "@heroicons/react/outline";
-import { DotsLoading } from "@/components";
 import {
   points as pointsQuery,
   deletePoint as deletePointQuery,
@@ -13,14 +12,17 @@ const Points = () => {
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(undefined);
 
-  const [{ data }] = useQuery({ query: pointsQuery });
-  const [_, executeMutation] = useMutation(deletePointQuery);
+  const [{ data }] = useQuery({
+    query: pointsQuery,
+    context: { additionalTypenames: ["Point"] },
+  });
+  const [, executeMutation] = useMutation(deletePointQuery);
 
   const points = data?.points;
 
   const onDeletePoint = async ({ _id }) => {
-    await executeMutation({ _id });
     setShowModal(undefined);
+    await executeMutation({ _id });
   };
 
   return (
@@ -61,22 +63,11 @@ const Points = () => {
               <div className="text">{point?.title}</div>
               <div className="text-gray400">{point?.address}</div>
             </div>
-            {point.pending && (
-              <div className="self-center flex-shrink">
-                <DotsLoading
-                  className="fill-current text-gray200"
-                  width="24"
-                  height="24"
-                />
-              </div>
-            )}
-            {!point.pending && (
-              <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
-                <button onClick={() => setShowModal(point)}>
-                  <TrashIcon className="w-5 h-5 text-red600" />
-                </button>
-              </div>
-            )}
+            <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
+              <button onClick={() => setShowModal(point)}>
+                <TrashIcon className="w-5 h-5 text-red600" />
+              </button>
+            </div>
           </div>
         ))}
 
