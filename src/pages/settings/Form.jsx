@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { mutate } from "swr";
-import api from "@/lib/api";
+import { useMutation } from "urql";
+import { createPoint as createPointQuery } from "@/queries.js";
 
 const Label = ({ children, ...props }) => {
   return (
@@ -47,22 +47,12 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (point) => {
-    onSubmitCallback(point);
+  const [_, mutate] = useMutation(createPointQuery);
 
-    mutate(
-      "/api/getPoints",
-      (currentPoints) => [{ ...point, pending: true }, ...currentPoints],
-      false
-    );
+  const onSubmit = async ({ title, address }) => {
+    await mutate({ title, address });
 
-    await api
-      .post("/api/createPoint", {
-        json: point,
-      })
-      .json();
-
-    mutate("/api/getPoints");
+    onSubmitCallback();
   };
 
   return (

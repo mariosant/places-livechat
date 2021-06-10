@@ -13,11 +13,6 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     strictPort: true,
-    hmr: {
-      protocol: "ws",
-      host: "localhost",
-      port: 3000,
-    },
     proxy: {
       "/graphql": "http://localhost:4000/graphql",
     },

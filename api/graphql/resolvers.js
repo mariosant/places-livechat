@@ -4,7 +4,7 @@ const points = async (_parent, _args, { auth, collections }) => {
       organization: auth.organization_id,
     },
     {
-      sort: { createdAt: 1 },
+      sort: { createdAt: -1 },
     }
   );
 
@@ -26,8 +26,6 @@ const createPoint = async (
   };
 
   const data = await collections.points.insert(point);
-
-  console.log(data);
 
   return data;
 };

@@ -1,8 +1,11 @@
 import { useState } from "preact/hooks";
-import useSWR from "swr";
+import { useQuery, useMutation } from "urql";
 import { TrashIcon } from "@heroicons/react/outline";
-import api from "@/lib/api";
 import { DotsLoading } from "@/components";
+import {
+  points as pointsQuery,
+  deletePoint as deletePointQuery,
+} from "@/queries.js";
 import Form from "./Form.jsx";
 import DeleteModal from "./DeleteModal.jsx";
 
@@ -10,25 +13,14 @@ const Points = () => {
   const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(undefined);
 
-  const { data: points, mutate } = useSWR("/api/getPoints", {
-    fetcher: (url) =>
-      api
-        .get(url)
-        .json()
-        .then(({ points }) => points),
-  });
+  const [{ data }] = useQuery({ query: pointsQuery });
+  const [_, executeMutation] = useMutation(deletePointQuery);
+
+  const points = data?.points;
 
   const onDeletePoint = async ({ _id }) => {
+    await executeMutation({ _id });
     setShowModal(undefined);
-
-    mutate(
-      (currentPoints) => currentPoints.filter((point) => point._id !== _id),
-      false
-    );
-
-    await api.post(`/api/deletePoint`, { json: { _id } }).catch(() => mutate());
-
-    mutate();
   };
 
   return (

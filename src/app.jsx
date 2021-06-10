@@ -1,3 +1,5 @@
+import { Provider } from "urql";
+import graphqlClient from "@/lib/graphqlClient.js";
 import useAuth from "@/lib/useAuth.js";
 import useMessagebox from "@/lib/useMessagebox.js";
 import Router from "@/router.jsx";
@@ -8,7 +10,11 @@ const App = () => {
 
   initialize();
 
-  return data ? <Router /> : null;
+  return data ? (
+    <Provider value={graphqlClient}>
+      <Router />
+    </Provider>
+  ) : null;
 };
 
 export default App;

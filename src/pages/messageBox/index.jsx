@@ -1,8 +1,8 @@
 import { useState } from "preact/hooks";
-import useSWR from "swr";
-import api from "@/lib/api";
+import { useQuery } from "urql";
 import useMessagebox from "@/lib/useMessagebox";
 import { PoiButton, SearchInput } from "@/components";
+import { points as pointsQuery } from "@/queries.js";
 
 const Page = () => {
   const [selected, setSelected] = useState(undefined);
@@ -10,12 +10,10 @@ const Page = () => {
 
   const { sendPoint } = useMessagebox();
 
-  const { data: response } = useSWR("/api/getPoints", {
-    fetcher: (url) => api.get(url).json(),
-  });
+  const [{ data }] = useQuery({ query: pointsQuery });
 
-  const isFetched = Boolean(response);
-  const points = response?.points ?? [];
+  const isFetched = Boolean(data);
+  const points = data?.points ?? [];
 
   const filteredPoints =
     searchQuery !== ""
