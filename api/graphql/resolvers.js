@@ -1,6 +1,4 @@
 const points = () => {
-  console.log("gets in");
-
   return [
     {
       id: "lorem",
@@ -32,4 +30,4 @@ const resolvers = {
   },
 };
 
-export default resolvers;
+module.exports = resolvers;

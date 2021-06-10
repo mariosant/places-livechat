@@ -18,5 +18,8 @@ export default defineConfig({
       host: "localhost",
       port: 3000,
     },
+    proxy: {
+      "/graphql": "http://localhost:4000/graphql",
+    },
   },
 });

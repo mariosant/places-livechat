@@ -1,11 +1,12 @@
 {
   "name": "pois",
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "scripts": {
+    "start": "node index.js",
+    "dev": "concurrently npm:ui:dev npm:server:dev",
+    "ui:dev": "vite --host=0.0.0.0 --port=3000",
+    "ui:build": "vite build",
+    "server:dev": "nodemon index.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@preact/preset-vite": "^2.0.0",
     "autoprefixer": "^10.2.5",
+    "concurrently": "^6.2.0",
     "nodemon": "^2.0.7",
     "postcss": "^8.3.0",
     "source-map-js": "^0.6.2",
