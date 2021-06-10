@@ -1,7 +1,24 @@
 import { createMessageBoxWidget } from "@livechat/agent-app-sdk";
+import { staticMapUrl } from "static-google-map";
 import create from "zustand";
 
-const { host } = window.location;
+const getMapUrl = (location) =>
+  staticMapUrl({
+    key: import.meta.env.VITE_APP_GOOGLE_MAPS_KEY,
+    scale: 1,
+    zoom: 16,
+    size: "256x356",
+    format: "png",
+    maptype: "roadmap",
+    language: "en",
+    style: "feature:poi.business|visibility:off",
+    markers: [
+      {
+        location: location,
+        color: "red",
+      },
+    ],
+  });
 
 const useWidget = create((set, get) => ({
   widget: {},
@@ -19,7 +36,7 @@ const useWidget = create((set, get) => ({
           title: title,
           subtitle: address,
           image: {
-            url: `https://${host}/api/map?location=${address}`,
+            url: getMapUrl(address),
           },
           buttons: [
             {
