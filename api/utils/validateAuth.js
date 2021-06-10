@@ -5,15 +5,13 @@ const livechatValidationUrl = "https://accounts.livechat.com/v2/info";
 const validateAuth = async (request) => {
   const authorizationHeader = request?.headers?.authorization ?? "";
 
-  const { data, error } = await axios
-    .get(livechatValidationUrl, {
-      headers: {
-        authorization: authorizationHeader,
-      },
-    })
-    .catch((error) => ({ error }));
+  const { data } = await axios.get(livechatValidationUrl, {
+    headers: {
+      authorization: authorizationHeader,
+    },
+  });
 
-  return [data, error];
+  return data;
 };
 
 module.exports = validateAuth;

@@ -1,13 +1,16 @@
-const { GraphQLClient } = require("graphql-request");
+const monk = require("monk");
 
-const { REALM_APP_ID, REALM_API_KEY } = process.env;
+const { MONGODB_URL } = process.env;
 
-const endpoint = `https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/${REALM_APP_ID}/graphql`;
+const db = monk(MONGODB_URL);
 
-const client = new GraphQLClient(endpoint, {
-  headers: {
-    apiKey: REALM_API_KEY,
-  },
+const points = db.get("points", {
+  castIds: true,
 });
 
-module.exports = client;
+module.exports = {
+  db,
+  collections: {
+    points,
+  },
+};

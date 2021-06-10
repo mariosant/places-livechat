@@ -1,9 +1,9 @@
 const typeDefs = `
     type Point {
-        id: ID!
+        _id: ID!
         title: String
         address: String
-        createdAt: Int
+        createdAt: String
     }
 
     type Query {
@@ -13,7 +13,7 @@ const typeDefs = `
     type Mutation {
         createPoint(title: String!, address: String!): Point
 
-        deletePoint(id: ID!): Point
+        deletePoint(_id: ID!): Point
     }
 `;
 

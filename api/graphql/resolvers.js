@@ -1,24 +1,45 @@
-const points = () => {
-  return [
+const points = async (_parent, _args, { auth, collections }) => {
+  const data = await collections.points.find(
     {
-      id: "lorem",
-      title: "Title",
-      address: "Skopelou 18",
-      createdAt: Date.now(),
+      organization: auth.organization_id,
     },
-  ];
+    {
+      sort: { createdAt: 1 },
+    }
+  );
+
+  return data;
 };
 
-const createPoint = () => {
-  return {
-    id: "lorem",
-    title: "Title",
-    address: "Skopelou 18",
+const createPoint = async (
+  _parent,
+  { title, address },
+  { auth, collections, utils }
+) => {
+  const point = {
+    _id: utils.nanoid(),
+    title,
+    address,
+    account: auth.account_id,
+    organization: auth.organization_id,
     createdAt: Date.now(),
   };
+
+  const data = await collections.points.insert(point);
+
+  console.log(data);
+
+  return data;
 };
 
-const deletePoint = () => {};
+const deletePoint = async (_parent, { _id }, { auth, collections }) => {
+  await collections.points.findOneAndDelete({
+    _id,
+    organization: auth.organization_id,
+  });
+
+  return { _id };
+};
 
 const resolvers = {
   Query: {
