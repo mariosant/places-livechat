@@ -3,7 +3,7 @@ import { TrashIcon } from "@heroicons/react/solid";
 
 const ConfirmButton = ({ children, ...props }) => (
   <button
-    className="p-2 font-semibold text-white rounded bg-red500 hover:bg-red600"
+    className="px-3 py-2 font-semibold text-white rounded bg-red500 hover:bg-red600"
     {...props}
   >
     {children}
@@ -11,7 +11,7 @@ const ConfirmButton = ({ children, ...props }) => (
 );
 
 const CancelButton = ({ children, ...props }) => (
-  <button className="p-2 text-gray200 hover:text-gray300" {...props}>
+  <button className="p-2 text-subtle hover:text-body" {...props}>
     {children}
   </button>
 );

@@ -13,7 +13,7 @@ const Label = ({ children, ...props }) => {
 const Input = (props) => {
   return (
     <input
-      className="w-2/3 p-2 border rounded border-gray200 focus:border-blue700"
+      className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
       {...props}
     />
   );
