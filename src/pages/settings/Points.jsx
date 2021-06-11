@@ -28,15 +28,18 @@ const Points = () => {
   };
 
   return (
-    <div className="border rounded-large border-gray150">
+    <div className="border rounded-large border-gray100">
       <div className="flex justify-between p-3">
-        <span className="font-semibold">Points</span>
-        <button className="text-blue700" onClick={() => setShowForm((v) => !v)}>
+        <span className="font-semibold">Places</span>
+        <button
+          className="text-blue500 hover:text-blue700"
+          onClick={() => setShowForm((v) => !v)}
+        >
           {showForm ? "Cancel" : "Add new"}
         </button>
       </div>
       {showForm && (
-        <div className="border-t border-gray150">
+        <div className="border-t border-gray100">
           <Form
             className="p-3"
             onSubmit={() => {
@@ -46,13 +49,13 @@ const Points = () => {
         </div>
       )}
       {!points && (
-        <div className="flex justify-between p-3 border-t group border-gray150">
+        <div className="flex justify-between p-3 border-t text-subtle group border-gray100">
           Loading places...
         </div>
       )}
 
       {points && points.length === 0 && (
-        <div className="flex justify-between p-3 border-t group border-gray150">
+        <div className="flex justify-between p-3 border-t text-subtle group border-gray100">
           Seems there are no places added yet. How about adding a few by
           clicking "Add new"?
         </div>
@@ -60,14 +63,14 @@ const Points = () => {
 
       {points &&
         points?.map((point) => (
-          <div className="flex justify-between p-3 border-t group border-gray150">
+          <div className="flex justify-between p-3 border-t group border-gray100">
             <div>
               <div className="text">{point?.title}</div>
-              <div className="text-gray400">{point?.address}</div>
+              <div className="text-gray200">{point?.address}</div>
             </div>
             <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
               <button onClick={() => setShowModal(point)}>
-                <TrashIcon className="w-5 h-5 text-red600" />
+                <TrashIcon className="w-5 h-5 text-red500" />
               </button>
             </div>
           </div>

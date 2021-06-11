@@ -11,7 +11,7 @@ const ConfirmButton = ({ children, ...props }) => (
 );
 
 const CancelButton = ({ children, ...props }) => (
-  <button className="p-2 text-gray300 hover:text-gray500" {...props}>
+  <button className="p-2 text-gray200 hover:text-gray300" {...props}>
     {children}
   </button>
 );
@@ -25,13 +25,13 @@ const DeleteModal = ({ onClose, onConfirm, pointName, ...props }) => {
     >
       <div className="flex items-center justify-center min-h-screen">
         <div className="z-20 flex flex-col items-center max-w-sm p-4 mx-auto text-center bg-white rounded-large">
-          <TrashIcon className="w-16 h-16 mb-6" />
+          <TrashIcon className="w-16 h-16 mb-6 text-heading" />
 
-          <Dialog.Title className="mb-4 text-xl font-semibold">
+          <Dialog.Title className="mb-4 text-xl font-semibold text-heading">
             Are you sure to delete that?
           </Dialog.Title>
 
-          <p className="mb-4">
+          <p className="mb-4 text-body">
             Are you sure you want to delete point <strong>{pointName}</strong>?
             Deleting points is <strong>an irreversible action</strong>.
           </p>

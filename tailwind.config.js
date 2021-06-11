@@ -4,6 +4,13 @@ module.exports = {
   purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   darkMode: false,
   theme: {
+    textColor: {
+      body: "#424d57",
+      heading: "#424d57",
+      subtle: livechatColors.gray300,
+      black: "#000",
+      ...livechatColors,
+    },
     colors: {
       ...livechatColors,
       black: "#000",
