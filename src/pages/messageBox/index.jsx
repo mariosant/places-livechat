@@ -38,18 +38,18 @@ const Page = () => {
   const isSelected = ({ title }) => title === selected?.title;
 
   return (
-    <div className="pt-12">
+    <div className="pt-12 text-body">
       <div className="fixed top-0 left-0 right-0 flex items-center justify-between w-full p-2 bg-white">
         <div className="w-1/3">
           <SearchInput
-            placeholder="Search places by title"
+            placeholder="Search places..."
             onInput={(event) => setSearchQuery(event.target.value)}
           />
         </div>
       </div>
 
       <div className="px-2 pb-2">
-        {!isFetched && <span className="text-gray400">Loading...</span>}
+        {!isFetched && <span className="text-subtle">Loading...</span>}
 
         {isFetched && filteredPoints?.length > 0 && (
           <div className="flex flex-wrap w-full gap-2">
@@ -65,7 +65,7 @@ const Page = () => {
         )}
 
         {isFetched && points.length === 0 && searchQuery === "" && (
-          <p className="text-gray400">
+          <p className="text-subtle">
             There are no places added yet.
             <br />
             Go to LiveChat Settings &gt; Integrations &amp; Apps &gt; Places, to
@@ -74,7 +74,7 @@ const Page = () => {
         )}
 
         {isFetched && points.length === 0 && searchQuery !== "" && (
-          <span className="text-gray400">
+          <span className="text-subtle">
             No places found. Perhaps make a broader search?
           </span>
         )}
