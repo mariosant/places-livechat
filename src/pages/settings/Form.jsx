@@ -62,8 +62,13 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
           autocomplete="off"
           type="text"
           placeholder="Section A store"
+          maxLength="100"
           {...register("title", {
             required: "Title is required",
+            maxLength: {
+              value: 100,
+              message: "This is too long, it can be up to 100 characters.",
+            },
           })}
         />
         {<Error>{errors?.title?.message}</Error>}
@@ -75,8 +80,13 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
           autocomplete="off"
           type="text"
           placeholder="Some street 11, AB122, City, Country"
+          maxLength="200"
           {...register("address", {
             required: "Address is required",
+            maxLength: {
+              value: 200,
+              message: "This is too long, it can be up to 200 characters.",
+            },
           })}
         />
         {<Error>{errors?.address?.message}</Error>}

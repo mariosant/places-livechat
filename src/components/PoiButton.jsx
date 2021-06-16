@@ -1,14 +1,19 @@
 import cn from "@mariosant/cn";
 
 export const PoiButton = ({ selected, children, ...props }) => {
-  const className = cn(
+  const dynamicClasses = cn(
+    "!inline-block",
+    "border",
     "flex",
-    "items-center",
+    "font-semibold",
     "h-8",
+    "items-center",
+    "max-w-full",
+    "overflow-ellipsis",
+    "overflow-x-hidden",
     "px-2",
     "rounded",
-    "font-semibold",
-    "border",
+    "whitespace-nowrap",
     [selected, "border-blue500", "border-gray150"],
     [selected, "bg-blue500", "bg-white"],
     [selected, "hover:bg-blue600", "hover:bg-gray50"],
@@ -16,7 +21,7 @@ export const PoiButton = ({ selected, children, ...props }) => {
   );
 
   return (
-    <button className={className} {...props}>
+    <button className={dynamicClasses} {...props}>
       {children}
     </button>
   );

@@ -24,18 +24,18 @@ const Page = () => {
         )
       : points;
 
-  const selectPoint =
-    ({ title, address }) =>
-    () => {
-      if (selected?.title === title) {
-        setSelected(undefined);
-      } else {
-        setSelected({ title, address });
-        sendPoint({ title, address });
-      }
-    };
+  const selectPoint = (_id) => () => {
+    if (selected === _id) {
+      setSelected(undefined);
+    } else {
+      setSelected(_id);
+      const point = points.find((p) => p._id === _id);
 
-  const isSelected = ({ title }) => title === selected?.title;
+      sendPoint(point);
+    }
+  };
+
+  const isSelected = (id) => id === selected;
 
   return (
     <div className="pt-12 text-body">
@@ -53,11 +53,8 @@ const Page = () => {
 
         {isFetched && filteredPoints?.length > 0 && (
           <div className="flex flex-wrap w-full gap-2">
-            {filteredPoints.map(({ title, address }) => (
-              <PoiButton
-                selected={isSelected({ title, address })}
-                onClick={selectPoint({ title, address })}
-              >
+            {filteredPoints.map(({ _id, title }) => (
+              <PoiButton selected={isSelected(_id)} onClick={selectPoint(_id)}>
                 {title}
               </PoiButton>
             ))}
