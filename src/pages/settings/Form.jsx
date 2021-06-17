@@ -65,6 +65,7 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
           maxLength="100"
           {...register("title", {
             required: "Title is required",
+            pattern: { value: /[\S]/g, message: "Title cannot be blank" },
             maxLength: {
               value: 100,
               message: "This is too long, it can be up to 100 characters.",
@@ -83,6 +84,7 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
           maxLength="200"
           {...register("address", {
             required: "Address is required",
+            pattern: { value: /[\S]/g, message: "Address cannot be blank" },
             maxLength: {
               value: 200,
               message: "This is too long, it can be up to 200 characters.",
