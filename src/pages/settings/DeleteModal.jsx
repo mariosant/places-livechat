@@ -3,7 +3,7 @@ import { TrashIcon } from "@heroicons/react/solid";
 
 const ConfirmButton = ({ children, ...props }) => (
   <button
-    className="px-3 py-2 font-semibold text-white rounded bg-red500 hover:bg-red600"
+    className="px-3 py-2 font-semibold text-white rounded whitespace-nowrap bg-red500 hover:bg-red600"
     {...props}
   >
     {children}
@@ -11,7 +11,7 @@ const ConfirmButton = ({ children, ...props }) => (
 );
 
 const CancelButton = ({ children, ...props }) => (
-  <button className="p-2 text-subtle hover:text-body" {...props}>
+  <button className="p-2 text-subtle whitespace-nowrap hover:text-body" {...props}>
     {children}
   </button>
 );
@@ -28,17 +28,17 @@ const DeleteModal = ({ onClose, onConfirm, pointName, ...props }) => {
           <TrashIcon className="w-16 h-16 mb-6 text-heading" />
 
           <Dialog.Title className="mb-4 text-xl font-semibold text-heading">
-            Are you sure to delete that?
+            Are you sure to delete this place?
           </Dialog.Title>
 
+          <div className="w-full mb-4 overflow-hidden whitespace-nowrap overflow-ellipsis">{pointName}</div>
           <p className="mb-4 text-body">
-            Are you sure you want to delete point <strong>{pointName}</strong>?
-            Deleting points is <strong>an irreversible action</strong>.
+            Deleting places is <strong>an irreversible action</strong>.
           </p>
 
           <div className="flex justify-between w-1/2 m-auto">
             <CancelButton onClick={onClose}>Cancel</CancelButton>
-            <ConfirmButton onClick={onConfirm}>Delete point</ConfirmButton>
+            <ConfirmButton onClick={onConfirm}>Delete place</ConfirmButton>
           </div>
         </div>
 

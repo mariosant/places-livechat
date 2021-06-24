@@ -22,7 +22,7 @@ const Input = (props) => {
 const Button = ({ children, ...props }) => {
   return (
     <button
-      className={`px-4 py-2 text-white font-semibold rounded hover:bg-blue600 ${
+      className={`px-5 py-2 text-white font-semibold rounded hover:bg-blue600 ${
         props.disabled ? "bg-gray300" : "bg-blue500"
       }`}
       {...props}
@@ -59,6 +59,7 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
       <div className="mb-3">
         <Label>Title</Label>
         <Input
+          autofocus
           autocomplete="off"
           type="text"
           placeholder="Section A store"

@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
 import { useQuery, useMutation } from "urql";
-import { TrashIcon } from "@heroicons/react/outline";
+import { TrashIcon, PlusIcon } from "@heroicons/react/outline";
 import {
   points as pointsQuery,
   deletePoint as deletePointQuery,
@@ -29,14 +29,22 @@ const Points = () => {
 
   return (
     <div className="border rounded-large border-gray100">
-      <div className="flex justify-between p-3">
+      <div className="flex items-center justify-between p-3">
         <span className="font-semibold">Places</span>
-        <button
-          className="text-blue500 hover:text-blue700"
+
+        {!showForm && <button
+          className="flex items-center px-2 py-1 font-semibold text-white border rounded border-blue500 bg-blue500 hover:bg-blue600"
           onClick={() => setShowForm((v) => !v)}
         >
-          {showForm ? "Cancel" : "Add new"}
-        </button>
+          <PlusIcon className="inline w-5 h-5" /> Add new
+        </button>}
+        
+        {showForm && <button
+          className="flex items-center px-2 py-1 font-semibold border rounded text-blue500 border-blue500 hover:bg-blue50"
+          onClick={() => setShowForm((v) => !v)}
+        >
+          Cancel
+        </button>}
       </div>
       {showForm && (
         <div className="border-t border-gray100">
@@ -63,14 +71,12 @@ const Points = () => {
 
       {points &&
         points?.map((point) => (
-          <div className="flex justify-between p-3 border-t group border-gray100">
-            <div>
-              <div className="text">{point?.title}</div>
-              <div className="text-gray200">{point?.address}</div>
-            </div>
-            <div className="self-center flex-shrink opacity-0 group-hover:opacity-100">
+          <div className="grid grid-cols-10 grid-rows-2 p-3 border-t group border-gray100">
+              <div className="col-span-9 row-span-1 row-start-1 overflow-x-hidden text whitespace-nowrap overflow-ellipsis">{point?.title}</div>
+              <div className="col-span-9 row-span-1 row-start-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis text-gray200 text">{point?.address}</div>
+            <div className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100">
               <button onClick={() => setShowModal(point)}>
-                <TrashIcon className="w-5 h-5 text-red500" />
+                <TrashIcon className="w-5 h-5 text-red300 hover:text-red500" />
               </button>
             </div>
           </div>
