@@ -14,9 +14,9 @@ export const PoiButton = ({ selected, children, ...props }) => {
     "px-2",
     "rounded",
     "whitespace-nowrap",
-    [selected, "border-blue500", "border-gray150"],
-    [selected, "bg-blue500", "bg-white"],
-    [selected, "hover:bg-blue600", "hover:bg-gray50"],
+    [selected, "border-blue400", "border-gray150"],
+    [selected, "bg-blue400", "bg-white"],
+    [selected, "hover:bg-blue500", "hover:bg-gray50"],
     [selected, "text-white"]
   );
 

@@ -11,7 +11,7 @@ const ConfirmButton = ({ children, ...props }) => (
 );
 
 const CancelButton = ({ children, ...props }) => (
-  <button className="p-2 text-subtle whitespace-nowrap hover:text-body" {...props}>
+  <button className="text-subtle whitespace-nowrap hover:text-body" {...props}>
     {children}
   </button>
 );
@@ -31,12 +31,14 @@ const DeleteModal = ({ onClose, onConfirm, pointName, ...props }) => {
             Are you sure to delete this place?
           </Dialog.Title>
 
-          <div className="w-full mb-4 overflow-hidden whitespace-nowrap overflow-ellipsis">{pointName}</div>
+          <div className="w-full mb-4 overflow-hidden whitespace-nowrap overflow-ellipsis">
+            {pointName}
+          </div>
           <p className="mb-4 text-body">
             Deleting places is <strong>an irreversible action</strong>.
           </p>
 
-          <div className="flex justify-between w-1/2 m-auto">
+          <div className="flex justify-around w-1/2 m-auto">
             <CancelButton onClick={onClose}>Cancel</CancelButton>
             <ConfirmButton onClick={onConfirm}>Delete place</ConfirmButton>
           </div>

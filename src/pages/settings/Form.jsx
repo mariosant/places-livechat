@@ -22,8 +22,8 @@ const Input = (props) => {
 const Button = ({ children, ...props }) => {
   return (
     <button
-      className={`px-5 py-2 text-white font-semibold rounded hover:bg-blue600 ${
-        props.disabled ? "bg-gray300" : "bg-blue500"
+      className={`px-5 py-2 text-white font-semibold rounded hover:bg-blue500 ${
+        props.disabled ? "bg-gray300" : "bg-blue400"
       }`}
       {...props}
     >
