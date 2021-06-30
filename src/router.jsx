@@ -8,6 +8,7 @@ export default () => (
   <Router>
     <MessageBoxPage path="/messagebox" />
     <SettingsPage path="/settings" />
+    <SettingsPage path="/settings/:whatever*" />
 
     <div default className="p-2">
       Not found

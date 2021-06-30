@@ -1,9 +1,10 @@
 import create from "zustand";
 import AccountsSdk from "@livechat/accounts-sdk";
 
+const clientId = import.meta.env.VITE_APP_LIVECHAT_CLIENT_ID;
+
 const accounts = new AccountsSdk({
-  client_id: import.meta.env.VITE_APP_LIVECHAT_CLIENT_ID,
-  prompt: true,
+  client_id: clientId,
 });
 
 const useAuth = create(() => ({
@@ -19,6 +20,7 @@ accounts
   })
   .catch(() => {
     accounts.redirect().authorize();
+    window.location.href = `https://accounts.livechatinc.com?response_type=token&client_id=${clientId}&redirect_uri=${window.location.href}`;
   });
 
 export default useAuth;

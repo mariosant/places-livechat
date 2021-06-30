@@ -26,3 +26,14 @@ mutation createPoint($title: String!, $address: String!) {
     }
 }
 `;
+
+export const updatePoint = `
+mutation updatePoint($point: PointInput) {
+    updatePoint(point: $point) {
+        _id
+        title
+        address
+        createdAt
+    }
+}
+`;

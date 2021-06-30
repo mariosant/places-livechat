@@ -1,9 +1,12 @@
 import { useState } from "preact/hooks";
 import { useQuery, useMutation } from "urql";
-import { TrashIcon, PlusIcon } from "@heroicons/react/outline";
+import Router, { Link, Route, route } from "preact-router";
+import { TrashIcon, PlusIcon, PencilIcon } from "@heroicons/react/outline";
 import {
   points as pointsQuery,
   deletePoint as deletePointQuery,
+  createPoint as createPointQuery,
+  updatePoint as updatePointQuery,
 } from "@/queries.js";
 import Form from "./Form.jsx";
 import DeleteModal from "./DeleteModal.jsx";
@@ -11,55 +14,52 @@ import DeleteModal from "./DeleteModal.jsx";
 const queryContext = { additionalTypenames: ["Point"] };
 
 const Points = () => {
-  const [showForm, setShowForm] = useState(false);
   const [showModal, setShowModal] = useState(undefined);
 
   const [{ data }] = useQuery({
     query: pointsQuery,
     context: queryContext,
   });
-  const [, executeMutation] = useMutation(deletePointQuery);
+  const [, deletePoint] = useMutation(deletePointQuery);
+  const [, createPoint] = useMutation(createPointQuery);
+  const [, updatePoint] = useMutation(updatePointQuery);
 
   const points = data?.points;
 
+  const onCreatePoint = async (point) => {
+    route("/settings");
+    await createPoint(point);
+  };
+
   const onDeletePoint = async ({ _id }) => {
-    setShowModal(undefined);
-    await executeMutation({ _id });
+    setShowModal(false);
+    await deletePoint({ _id });
   };
 
   return (
     <div className="border rounded-large border-gray100">
-      <div className="flex items-center justify-between p-3">
+      <div className="flex items-center justify-between px-3 min-h-[48px]">
         <span className="font-semibold">Places</span>
 
-        {!showForm && (
-          <button
-            className="flex items-center px-2 py-1 font-semibold text-white border rounded border-blue400 bg-blue400 hover:bg-blue500"
-            onClick={() => setShowForm((v) => !v)}
-          >
-            <PlusIcon className="inline w-5 h-5" /> Add new
-          </button>
-        )}
-
-        {showForm && (
-          <button
-            className="flex items-center px-2 py-1 font-semibold border rounded text-blue400 border-blue400 hover:bg-blue50"
-            onClick={() => setShowForm((v) => !v)}
-          >
-            Cancel
-          </button>
-        )}
+        <Link
+          path="/settings"
+          className="flex items-center px-2 py-1 font-semibold text-white border rounded border-blue400 bg-blue400 hover:bg-blue500"
+          href="/settings/places/new"
+        >
+          <PlusIcon className="inline w-5 h-5" /> Add new
+        </Link>
       </div>
-      {showForm && (
-        <div className="border-t border-gray100">
+
+      <Router>
+        <div className="border-t border-gray100" path="/settings/places/new">
           <Form
             className="p-3"
-            onSubmit={() => {
-              setShowForm(false);
-            }}
+            onSubmit={onCreatePoint}
+            onCancel={() => route("/settings")}
           />
         </div>
-      )}
+      </Router>
+
       {!points && (
         <div className="flex justify-between p-3 border-t text-subtle group border-gray100">
           Loading places...
@@ -75,26 +75,62 @@ const Points = () => {
 
       {points &&
         points?.map((point) => (
-          <div className="grid grid-cols-10 grid-rows-2 p-3 border-t group border-gray100">
-            <div className="col-span-9 row-span-1 row-start-1 overflow-x-hidden text whitespace-nowrap overflow-ellipsis">
-              {point?.title}
+          <Router>
+            <div
+              path={`/settings/places/${point._id}/edit`}
+              className="p-3 border-t group border-gray100"
+            >
+              <Form
+                point={point}
+                onSubmit={async ({ title, address }) => {
+                  route("/settings");
+                  await updatePoint({
+                    point: { _id: point._id, title, address },
+                  });
+                }}
+                onCancel={() => route("/settings")}
+              />
             </div>
-            <div className="col-span-9 row-span-1 row-start-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis text-gray200 text">
-              {point?.address}
+            <div
+              default
+              className="grid grid-cols-10 grid-rows-2 p-3 border-t group border-gray100"
+            >
+              <div className="col-span-9 row-span-1 row-start-1 overflow-x-hidden text whitespace-nowrap overflow-ellipsis">
+                {point?.title}
+              </div>
+              <div className="col-span-9 row-span-1 row-start-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis text-gray200 text">
+                {point?.address}
+              </div>
+              <div
+                path="/settings"
+                className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100"
+              >
+                <Link
+                  className="mr-4"
+                  href={`/settings/places/${point._id}/edit`}
+                >
+                  <PencilIcon className="w-5 h-5 opacity-50 text-gray500 hover:opacity-100" />
+                </Link>
+
+                <button onClick={() => setShowModal(point)}>
+                  <TrashIcon className="w-5 h-5 opacity-50 text-red500 hover:opacity-100" />
+                </button>
+              </div>
             </div>
-            <div className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100">
-              <button onClick={() => setShowModal(point)}>
-                <TrashIcon className="w-5 h-5 text-red300 hover:text-red500" />
-              </button>
-            </div>
-          </div>
+          </Router>
         ))}
 
       <DeleteModal
         open={Boolean(showModal)}
         pointName={showModal?.title}
-        onClose={() => setShowModal(undefined)}
-        onConfirm={() => onDeletePoint(showModal)}
+        onClose={() => {
+          route("/settings");
+          setShowModal(undefined);
+        }}
+        onConfirm={() => {
+          route("/settings");
+          onDeletePoint(showModal);
+        }}
       />
     </div>
   );

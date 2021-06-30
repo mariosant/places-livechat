@@ -1,21 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useMutation } from "urql";
-import { createPoint as createPointQuery } from "@/queries.js";
+import { useEffect } from "preact/hooks";
 
 const Label = ({ children, ...props }) => {
   return (
     <label className="block font-semibold" {...props}>
       {children}
     </label>
-  );
-};
-
-const Input = (props) => {
-  return (
-    <input
-      className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
-      {...props}
-    />
   );
 };
 
@@ -40,30 +30,37 @@ const Error = ({ children, ...props }) => {
   );
 };
 
-const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
+const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
   const {
     handleSubmit,
     register,
+    setFocus,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: point?.title,
+      address: point?.address,
+    },
+  });
 
-  const [_, mutate] = useMutation(createPointQuery);
+  useEffect(() => {
+    setFocus("title");
+  }, [setFocus]);
 
   const onSubmit = async ({ title, address }) => {
-    onSubmitCallback();
-    await mutate({ title, address });
+    onSubmitCallback({ title, address });
   };
 
   return (
     <form {...props} onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <Label>Title</Label>
-        <Input
+        <input
           autofocus
           autocomplete="off"
-          type="text"
           placeholder="Section A store"
           maxLength="100"
+          className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
           {...register("title", {
             required: "Title is required",
             pattern: { value: /[\S]/g, message: "Title cannot be blank" },
@@ -78,11 +75,11 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
 
       <div className="mb-4">
         <Label>Address</Label>
-        <Input
+        <input
           autocomplete="off"
-          type="text"
           placeholder="Some street 11, AB122, City, Country"
           maxLength="200"
+          className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
           {...register("address", {
             required: "Address is required",
             pattern: { value: /[\S]/g, message: "Address cannot be blank" },
@@ -98,6 +95,16 @@ const Form = ({ onSubmit: onSubmitCallback, ...props }) => {
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Saving..." : "Save"}
       </Button>
+
+      {onCancel && (
+        <button
+          onClick={onCancel}
+          type="button"
+          className="ml-4 text-subtle hover:text-body"
+        >
+          Cancel
+        </button>
+      )}
     </form>
   );
 };

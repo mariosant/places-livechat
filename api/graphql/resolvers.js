@@ -30,6 +30,22 @@ const createPoint = async (
   return data;
 };
 
+const updatePoint = async (_parent, { point }, { auth, collections }) => {
+  const { _id, ...restProperties } = point;
+
+  const updatedPoint = await collections.points.findOneAndUpdate(
+    {
+      _id,
+      organization: auth.organization_id,
+    },
+    {
+      $set: restProperties,
+    }
+  );
+
+  return updatedPoint;
+};
+
 const deletePoint = async (_parent, { _id }, { auth, collections }) => {
   await collections.points.findOneAndDelete({
     _id,
@@ -45,6 +61,7 @@ const resolvers = {
   },
   Mutation: {
     createPoint,
+    updatePoint,
     deletePoint,
   },
 };
