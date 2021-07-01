@@ -109,7 +109,13 @@ const Points = () => {
                 path="/settings"
                 className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100"
               >
-                <button onClick={() => setShowModal(point)} title="Delete">
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setShowModal(point);
+                  }}
+                  title="Delete"
+                >
                   <TrashIcon className="w-5 h-5 opacity-50 text-red500 hover:opacity-100" />
                 </button>
               </div>
