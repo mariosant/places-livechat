@@ -88,12 +88,16 @@ const Points = () => {
                     point: { _id: point._id, title, address },
                   });
                 }}
-                onCancel={() => route("/settings")}
+                onCancel={(event) => {
+                  event.stopPropagation();
+                  route("/settings");
+                }}
               />
             </div>
             <div
               default
-              className="grid grid-cols-10 grid-rows-2 p-3 border-t group border-gray100"
+              onClick={() => route(`/settings/places/${point._id}/edit`)}
+              className="grid grid-cols-10 grid-rows-2 p-3 border-t cursor-pointer hover:bg-gray25 group border-gray100"
             >
               <div className="col-span-9 row-span-1 row-start-1 overflow-x-hidden text whitespace-nowrap overflow-ellipsis">
                 {point?.title}
@@ -105,14 +109,7 @@ const Points = () => {
                 path="/settings"
                 className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100"
               >
-                <Link
-                  className="mr-4"
-                  href={`/settings/places/${point._id}/edit`}
-                >
-                  <PencilIcon className="w-5 h-5 opacity-50 text-gray500 hover:opacity-100" />
-                </Link>
-
-                <button onClick={() => setShowModal(point)}>
+                <button onClick={() => setShowModal(point)} title="Delete">
                   <TrashIcon className="w-5 h-5 opacity-50 text-red500 hover:opacity-100" />
                 </button>
               </div>

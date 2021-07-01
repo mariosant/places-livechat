@@ -34,7 +34,7 @@ const DeleteModal = ({ onClose, onConfirm, pointName, ...props }) => {
             Are you sure to delete this place?
           </Dialog.Title>
 
-          <div className="w-full mb-4 overflow-hidden whitespace-nowrap overflow-ellipsis">
+          <div className="p-2 mb-4 overflow-hidden text-2xl text-red800 whitespace-nowrap overflow-ellipsis">
             {pointName}
           </div>
 
