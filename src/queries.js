@@ -22,7 +22,6 @@ mutation createPoint($title: String!, $address: String!) {
         _id
         title
         address
-        createdAt
     }
 }
 `;
@@ -33,7 +32,6 @@ mutation updatePoint($point: PointInput) {
         _id
         title
         address
-        createdAt
     }
 }
 `;
