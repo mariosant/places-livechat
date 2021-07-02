@@ -1,5 +1,6 @@
 import { createClient, fetchExchange, dedupExchange } from "urql";
 import { cacheExchange } from "@urql/exchange-graphcache";
+import { devtoolsExchange } from "@urql/devtools";
 import useAuth from "./useAuth";
 import { points as pointsQuery } from "@/queries.js";
 
@@ -8,20 +9,15 @@ const graphExchange = cacheExchange({
     Mutation: {
       createPoint: (result, _args, cache) => {
         cache.updateQuery({ query: pointsQuery }, (data) => ({
+          ...data,
           points: [result.createPoint, ...data.points],
         }));
       },
       deletePoint: (result, _args, cache) => {
         cache.updateQuery({ query: pointsQuery }, (data) => ({
+          ...data,
           points: data.points.filter(
             ({ _id }) => _id !== result.deletePoint._id
-          ),
-        }));
-      },
-      updatePoint: (result, args, cache) => {
-        cache.updateQuery({ query: pointsQuery }, (data) => ({
-          points: data.points.map((point) =>
-            point._id === args._id ? result.updatePoint : point
           ),
         }));
       },
@@ -58,7 +54,7 @@ const client = createClient({
       headers: { authorization: `Bearer ${data?.access_token}` },
     };
   },
-  exchanges: [dedupExchange, graphExchange, fetchExchange],
+  exchanges: [devtoolsExchange, dedupExchange, graphExchange, fetchExchange],
 });
 
 export default client;

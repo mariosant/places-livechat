@@ -18,6 +18,7 @@
     "@loadable/component": "^5.15.0",
     "@mariosant/cn": "^0.3.0",
     "@preact/preset-vite": "^2.0.0",
+    "@urql/devtools": "^2.0.3",
     "@urql/exchange-graphcache": "^4.1.4",
     "apollo-server-express": "^2.25.1",
     "autoprefixer": "^10.2.5",

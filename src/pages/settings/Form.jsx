@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
+import useKeyPress from "@/lib/useKeypress";
 
 const Label = ({ children, ...props }) => {
   return (
@@ -31,6 +32,14 @@ const Error = ({ children, ...props }) => {
 };
 
 const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
+  useKeyPress("Escape", {
+    onKeyUp: (event) => {
+      if (onCancel) {
+        onCancel(event);
+      }
+    },
+  });
+
   const {
     handleSubmit,
     register,
