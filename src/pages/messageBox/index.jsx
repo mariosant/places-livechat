@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { useQuery } from "urql";
+import { useQuery } from "@urql/preact";
 import useMessagebox from "@/lib/useMessagebox";
 import { PoiButton, SearchInput } from "@/components";
 import { points as pointsQuery } from "@/queries.js";

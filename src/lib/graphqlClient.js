@@ -1,4 +1,4 @@
-import { createClient, fetchExchange, dedupExchange } from "urql";
+import { createClient, fetchExchange, dedupExchange } from "@urql/preact";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { devtoolsExchange } from "@urql/devtools";
 import useAuth from "./useAuth";

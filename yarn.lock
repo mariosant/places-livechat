@@ -741,6 +741,14 @@
     "@urql/core" ">=2.1.4"
     wonka "^4.0.14"
 
+"@urql/preact@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@urql/preact/-/preact-2.0.2.tgz#978b442458c334ebf756456735563e9382428ffb"
+  integrity sha512-MKzO7ZkUYme8OcWDf+Q5HXytxRymIhqTItgot69bWE0G8Tm59SMRQg4sLbkutWACSHpPl5kepQpm72lDTrNTGg==
+  dependencies:
+    "@urql/core" "^2.1.0"
+    wonka "^4.0.14"
+
 "@wry/equality@^0.1.2":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@wry/equality/-/equality-0.1.11.tgz#35cb156e4a96695aa81a9ecc4d03787bc17f1790"
@@ -3572,14 +3580,6 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-urql@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/urql/-/urql-2.0.3.tgz#41bc4ad3ea7a1c995bbc8002f9ee82af1396bd26"
-  integrity sha512-CEfCsODKbAloDuAaT3NeMvibKpWxfS86DucI/HGam9uuqiZLpunuKb4p9+SWwoWLRf6Q1kUeQKGZoI5GqudOCg==
-  dependencies:
-    "@urql/core" "^2.1.0"
-    wonka "^4.0.14"
 
 util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

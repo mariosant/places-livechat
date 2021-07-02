@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { useQuery, useMutation } from "urql";
+import { useQuery, useMutation } from "@urql/preact";
 import Router, { Link, Route, route } from "preact-router";
 import { TrashIcon, PlusIcon, PencilIcon } from "@heroicons/react/outline";
 import {

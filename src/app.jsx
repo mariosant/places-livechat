@@ -1,4 +1,4 @@
-import { Provider } from "urql";
+import { Provider } from "@urql/preact";
 import graphqlClient from "@/lib/graphqlClient.js";
 import useAuth from "@/lib/useAuth.js";
 import useMessagebox from "@/lib/useMessagebox.js";
