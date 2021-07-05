@@ -14,11 +14,13 @@ const validateAuth = async (request) => {
     return cachedData;
   }
 
-  const { data } = await axios.get(livechatValidationUrl, {
-    headers: {
-      authorization: authorizationHeader,
-    },
-  });
+  const { data } = await axios
+    .get(livechatValidationUrl, {
+      headers: {
+        Authorization: authorizationHeader,
+      },
+    })
+    .catch(console.log);
 
   await tokensCache.set(authorizationHeader, data);
 
