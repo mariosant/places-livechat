@@ -1,6 +1,8 @@
+import { useQuery } from "@urql/preact";
 import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
+import { availableGroups as availableGroupsQuery } from "@/queries.js";
 
 const Label = ({ children, ...props }) => {
   return (
@@ -49,15 +51,19 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
     defaultValues: {
       title: point?.title,
       address: point?.address,
+      groupId: point?.group?._id,
     },
   });
+
+  const [{ data }] = useQuery({ query: availableGroupsQuery });
+  const availableGroups = data?.availableGroups;
 
   useEffect(() => {
     setFocus("title");
   }, [setFocus]);
 
-  const onSubmit = async ({ title, address }) => {
-    onSubmitCallback({ title, address });
+  const onSubmit = async ({ title, address, groupId }) => {
+    onSubmitCallback({ title, address, groupId });
   };
 
   return (
@@ -101,19 +107,48 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
         {<Error>{errors?.address?.message}</Error>}
       </div>
 
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Saving..." : "Save"}
-      </Button>
+      <div className="mb-4">
+        <Label>LiveChat group</Label>
+        {availableGroups ? (
+          <select
+            autocomplete="off"
+            placeholder="Some street 11, AB122, City, Country"
+            className="w-2/3 p-2 bg-white border rounded appearance-none cursor-pointer border-gray150 focus:border-blue500"
+            {...register("groupId")}
+          >
+            <option value={undefined}>
+              None (use this to clear assignment)
+            </option>
+            {availableGroups.map((group) => (
+              <option key={group._id} value={group._id}>
+                {group.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            disabled
+            placeholder="loading LiveChat groups..."
+            className="w-2/3 p-2 bg-white border rounded border-gray150"
+          />
+        )}
+      </div>
 
-      {onCancel && (
-        <button
-          onClick={onCancel}
-          type="button"
-          className="ml-4 text-subtle hover:text-body"
-        >
-          Cancel
-        </button>
-      )}
+      <div className="flex">
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Saving..." : "Save"}
+        </Button>
+
+        {onCancel && (
+          <button
+            onClick={onCancel}
+            type="button"
+            className="block ml-4 text-subtle hover:text-body"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

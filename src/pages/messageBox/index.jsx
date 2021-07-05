@@ -2,27 +2,34 @@ import { useState } from "preact/hooks";
 import { useQuery } from "@urql/preact";
 import useMessagebox from "@/lib/useMessagebox";
 import { PoiButton, SearchInput } from "@/components";
-import { points as pointsQuery } from "@/queries.js";
+import {
+  points as pointsQuery,
+  availableGroups as availableGroupsQuery,
+} from "@/queries.js";
 
 const Page = () => {
   const [selected, setSelected] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
+  const [groupIdQuery, setGroupIdQuery] = useState("");
 
   const { sendPoint } = useMessagebox();
 
   const [{ data }] = useQuery({ query: pointsQuery });
+  const [{ data: groupsData }] = useQuery({ query: availableGroupsQuery });
 
   const isFetched = Boolean(data);
   const points = data?.points ?? [];
+  const groups = groupsData?.availableGroups ?? [];
 
-  const filteredPoints =
-    searchQuery !== ""
-      ? points.filter(
-          ({ address, title }) =>
-            title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            address.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : points;
+  const filteredPoints = points
+    .filter(
+      ({ address, title }) =>
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        address.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter(({ group }) => {
+      return groupIdQuery === "" ? true : group?._id === groupIdQuery;
+    });
 
   const selectPoint = (_id) => () => {
     if (selected === _id) {
@@ -39,12 +46,26 @@ const Page = () => {
 
   return (
     <div className="pt-12 text-body">
-      <div className="fixed top-0 left-0 right-0 flex items-center justify-between w-full p-2 bg-white">
-        <div className="w-1/3">
+      <div className="fixed top-0 left-0 right-0 flex items-center w-full p-2 bg-white">
+        <div className="w-1/3 mr-2">
           <SearchInput
             placeholder="Search places..."
             onInput={(event) => setSearchQuery(event.target.value)}
           />
+        </div>
+        <div>
+          <span className="font-semibold">LiveChat group:</span>
+          <select
+            onChange={(event) => {
+              setGroupIdQuery(event.target.value);
+            }}
+            className="px-2 bg-white cursor-pointer"
+          >
+            <option value={undefined}>All groups</option>
+            {groups.map((group) => (
+              <option value={group._id}>{group.name}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -70,11 +91,13 @@ const Page = () => {
           </p>
         )}
 
-        {isFetched && points.length === 0 && searchQuery !== "" && (
-          <span className="text-subtle">
-            No places found. Perhaps make a broader search?
-          </span>
-        )}
+        {isFetched &&
+          filteredPoints.length === 0 &&
+          (searchQuery !== "" || groupIdQuery !== "") && (
+            <span className="text-subtle">
+              No places found. Perhaps make a broader search?
+            </span>
+          )}
       </div>
     </div>
   );

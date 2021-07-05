@@ -4,6 +4,10 @@ query {
     _id
     title
     address
+    group {
+      _id
+      name
+    }
   }
 }
 `;
@@ -17,11 +21,15 @@ mutation deletePoint($_id: ID!) {
 `;
 
 export const createPoint = `
-mutation createPoint($title: String!, $address: String!) {
-    createPoint(title: $title, address: $address) {
+mutation createPoint($title: String!, $address: String!, $groupId: String) {
+    createPoint(title: $title, address: $address, groupId: $groupId) {
         _id
         title
         address
+        group {
+          _id
+          name
+        }
     }
 }
 `;
@@ -32,6 +40,18 @@ mutation updatePoint($point: PointInput) {
         _id
         title
         address
+        group {
+          _id
+        }
     }
 }
+`;
+
+export const availableGroups = `
+  query {
+    availableGroups {
+      _id
+      name
+    }
+  }
 `;

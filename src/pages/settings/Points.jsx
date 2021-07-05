@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 import { useQuery, useMutation } from "@urql/preact";
-import Router, { Link, Route, route } from "preact-router";
-import { TrashIcon, PlusIcon, PencilIcon } from "@heroicons/react/outline";
+import Router, { Link, route } from "preact-router";
+import { TrashIcon, PlusIcon } from "@heroicons/react/outline";
 import {
   points as pointsQuery,
   deletePoint as deletePointQuery,
@@ -82,10 +82,11 @@ const Points = () => {
             >
               <Form
                 point={point}
-                onSubmit={async ({ title, address }) => {
+                onSubmit={async ({ title, address, groupId }) => {
                   route("/settings");
+
                   await updatePoint({
-                    point: { _id: point._id, title, address },
+                    point: { _id: point._id, title, address, groupId },
                   });
                 }}
                 onCancel={(event) => {
@@ -97,7 +98,7 @@ const Points = () => {
             <div
               default
               onClick={() => route(`/settings/places/${point._id}/edit`)}
-              className="grid grid-cols-10 grid-rows-2 p-3 border-t cursor-pointer hover:bg-gray25 group border-gray100"
+              className="grid grid-cols-10 p-3 border-t cursor-pointer hover:bg-gray25 group border-gray100"
             >
               <div className="col-span-9 row-span-1 row-start-1 overflow-x-hidden text whitespace-nowrap overflow-ellipsis">
                 {point?.title}
@@ -105,6 +106,18 @@ const Points = () => {
               <div className="col-span-9 row-span-1 row-start-2 overflow-x-hidden whitespace-nowrap overflow-ellipsis text-gray200 text">
                 {point?.address}
               </div>
+
+              {point?.group && (
+                <div className="flex col-span-9 row-span-1 row-start-3 mt-2 overflow-x-hidden align-baseline whitespace-nowrap overflow-ellipsis text-body text">
+                  <div
+                    className="flex h-6 px-2 align-middle rounded bg-yellow100"
+                    title={`Assigned to group ${point.group.name}`}
+                  >
+                    {point?.group?.name}
+                  </div>
+                </div>
+              )}
+
               <div
                 path="/settings"
                 className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100"

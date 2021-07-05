@@ -30,17 +30,32 @@ const graphExchange = cacheExchange({
       _id: "temporary",
       title: vars.title,
       address: vars.address,
+      group: null,
     }),
     deletePoint: (vars) => ({
       __typename: "Point",
       _id: vars._id,
     }),
-    updatePoint: (vars) => ({
-      __typename: "Point",
-      _id: vars.point._id,
-      title: vars.point.title,
-      address: vars.point.address,
-    }),
+    updatePoint: (vars, cache) => {
+      const group = vars.point.groupId
+        ? {
+            __typename: "Group",
+            _id: vars.point.groupId,
+            name: cache.resolve(
+              { __typename: "Group", _id: vars.point.groupId },
+              "name"
+            ),
+          }
+        : null;
+
+      return {
+        __typename: "Point",
+        _id: vars.point._id,
+        title: vars.point.title,
+        address: vars.point.address,
+        group,
+      };
+    },
   },
 });
 

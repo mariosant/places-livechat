@@ -1,4 +1,7 @@
-import { createMessageBoxWidget } from "@livechat/agent-app-sdk";
+import {
+  createDetailsWidget,
+  createMessageBoxWidget,
+} from "@livechat/agent-app-sdk";
 import { staticMapUrl } from "static-google-map";
 import create from "zustand";
 
@@ -24,6 +27,7 @@ const useWidget = create((set, get) => ({
   widget: {},
   initialize: async () => {
     const widget = await createMessageBoxWidget();
+
     set({ widget });
   },
   sendPoint: ({ title, address }) => {

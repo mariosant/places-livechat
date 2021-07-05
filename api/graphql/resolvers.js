@@ -16,14 +16,14 @@ const points = async (_parent, _args, { auth, collections }) => {
 
 const createPoint = async (
   _parent,
-  { title, address, group },
+  { title, address, groupId },
   { auth, collections, utils }
 ) => {
   const point = {
     _id: utils.nanoid(),
     title,
     address,
-    group,
+    groupId,
     account: auth.account_id,
     organization: auth.organization_id,
     createdAt: Date.now(),

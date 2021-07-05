@@ -16,6 +16,7 @@ const typeDefs = `
         _id: String
         title: String
         address: String
+        groupId: String
     }
 
     type Query {
