@@ -55,3 +55,12 @@ export const availableGroups = `
     }
   }
 `;
+
+export const organization = `
+  query {
+    organization {
+      _id
+      proPlan
+    }
+  }
+`;

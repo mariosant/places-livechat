@@ -19,9 +19,15 @@ const typeDefs = `
         groupId: String
     }
 
+    type Organization {
+        _id: ID!
+        proPlan: Boolean
+    }
+
     type Query {
         points: [Point]
         availableGroups: [Group]
+        organization: Organization
     }
 
     type Mutation {

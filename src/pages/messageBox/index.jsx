@@ -1,10 +1,12 @@
 import { useState } from "preact/hooks";
+import isObject from "lodash/isObject";
 import { useQuery } from "@urql/preact";
 import useMessagebox from "@/lib/useMessagebox";
 import { PoiButton, SearchInput } from "@/components";
 import {
   points as pointsQuery,
   availableGroups as availableGroupsQuery,
+  organization as organizationQuery,
 } from "@/queries.js";
 
 const Page = () => {
@@ -16,6 +18,9 @@ const Page = () => {
 
   const [{ data }] = useQuery({ query: pointsQuery });
   const [{ data: groupsData }] = useQuery({ query: availableGroupsQuery });
+  const [{ data: orgData, isFetching }] = useQuery({
+    query: organizationQuery,
+  });
 
   const isFetched = Boolean(data);
   const points = data?.points ?? [];
@@ -55,17 +60,32 @@ const Page = () => {
         </div>
         <div>
           <span className="font-semibold">LiveChat group:</span>
-          <select
-            onChange={(event) => {
-              setGroupIdQuery(event.target.value);
-            }}
-            className="px-2 bg-white cursor-pointer"
-          >
-            <option value={undefined}>All groups</option>
-            {groups.map((group) => (
-              <option value={group._id}>{group.name}</option>
-            ))}
-          </select>
+          {orgData?.organization.proPlan && (
+            <select
+              onChange={(event) => {
+                setGroupIdQuery(event.target.value);
+              }}
+              className="px-2 bg-white cursor-pointer"
+            >
+              <option value={undefined}>All groups</option>
+              {groups.map((group) => (
+                <option value={group._id}>{group.name}</option>
+              ))}
+            </select>
+          )}
+          {!orgData?.organization.proPlan && isObject(orgData) && (
+            <select
+              disabled
+              onChange={(event) => {
+                setGroupIdQuery(event.target.value);
+              }}
+              className="px-2 bg-white appearance-none"
+            >
+              <option value={undefined}>
+                Available only to Pro plan subscripbers
+              </option>
+            </select>
+          )}
         </div>
       </div>
 

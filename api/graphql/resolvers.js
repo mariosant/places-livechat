@@ -80,10 +80,24 @@ const availableGroups = async (_parent, _args, { utils: { lc } }) => {
   return mappedGroups;
 };
 
+const organization = async (_parent, _args, { auth, collections }) => {
+  const purchaseObject = await collections.purchases.findOne({
+    organization: auth.organization_id,
+  });
+
+  const data = {
+    _id: auth.organization_id,
+    proPlan: purchaseObject.purchase === "pro-plan",
+  };
+
+  return data;
+};
+
 const resolvers = {
   Query: {
     points: resolverRequiresAuth(points),
     availableGroups: resolverRequiresAuth(availableGroups),
+    organization: resolverRequiresAuth(organization),
   },
   Mutation: {
     createPoint,

@@ -2,7 +2,7 @@ import { useQuery } from "@urql/preact";
 import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
-import { availableGroups as availableGroupsQuery } from "@/queries.js";
+import { ExclamationIcon } from "@heroicons/react/outline";
 
 const Label = ({ children, ...props }) => {
   return (
@@ -55,8 +55,22 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
     },
   });
 
-  const [{ data }] = useQuery({ query: availableGroupsQuery });
+  const [{ data }] = useQuery({
+    query: `
+    query {
+      availableGroups {
+        _id
+        name
+      }
+      organization {
+        _id
+        proPlan
+      }
+    }
+  `,
+  });
   const availableGroups = data?.availableGroups;
+  const proPlan = data?.organization?.proPlan ?? false;
 
   useEffect(() => {
     setFocus("title");
@@ -107,33 +121,48 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
         {<Error>{errors?.address?.message}</Error>}
       </div>
 
-      <div className="mb-4">
-        <Label>LiveChat group</Label>
-        {availableGroups ? (
-          <select
-            autocomplete="off"
-            placeholder="Some street 11, AB122, City, Country"
-            className="w-2/3 p-2 bg-white border rounded appearance-none cursor-pointer border-gray150 focus:border-blue500"
-            {...register("groupId")}
-          >
-            <option value={undefined}>
-              None (use this to clear assignment)
-            </option>
-            {availableGroups.map((group) => (
-              <option key={group._id} value={group._id}>
-                {group.name}
+      {proPlan && (
+        <div className="mb-4">
+          <Label>LiveChat group</Label>
+          {availableGroups ? (
+            <select
+              autocomplete="off"
+              placeholder="Some street 11, AB122, City, Country"
+              className="w-2/3 p-2 bg-white border rounded appearance-none cursor-pointer border-gray150 focus:border-blue500"
+              {...register("groupId")}
+            >
+              <option value={undefined}>
+                None (use this to clear assignment)
               </option>
-            ))}
-          </select>
-        ) : (
+              {availableGroups.map((group) => (
+                <option key={group._id} value={group._id}>
+                  {group.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              disabled
+              placeholder="loading LiveChat groups..."
+              className="w-2/3 p-2 bg-white border rounded border-gray150"
+            />
+          )}
+        </div>
+      )}
+
+      {!proPlan && (
+        <div className="mb-4">
+          <Label>
+            LiveChat group{" "}
+            <ExclamationIcon className="inline w-5 h-5 text-subtle" />
+          </Label>
           <input
             disabled
-            placeholder="loading LiveChat groups..."
-            className="w-2/3 p-2 bg-white border rounded border-gray150"
+            placeholder="This feature is available only to Pro plan subscribers"
+            className="w-2/3 p-2 border rounded bg-gray25 border-gray100"
           />
-        )}
-      </div>
-
+        </div>
+      )}
       <div className="flex">
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : "Save"}

@@ -8,9 +8,14 @@ const points = db.get("points", {
   castIds: true,
 });
 
+const purchases = db.get("purchases", {
+  castIds: true,
+});
+
 module.exports = {
   db,
   collections: {
     points,
+    purchases,
   },
 };
