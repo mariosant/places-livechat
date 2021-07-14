@@ -70,7 +70,9 @@ const group = async (parent, _args, { utils: { lc } }) => {
 };
 
 const availableGroups = async (_parent, _args, { utils: { lc } }) => {
-  const groups = await lc.client.post("/action/list_groups", {});
+  const groups = await lc.client
+    .post("/action/list_groups", {})
+    .catch(() => []);
 
   const mappedGroups = groups.map((group) => ({
     _id: group.id,
