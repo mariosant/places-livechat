@@ -4,19 +4,12 @@ const typeDefs = `
         title: String
         address: String
         createdAt: String
-        group: Group
-    }
-
-    type Group {
-        _id: ID!
-        name: String
     }
 
     input PointInput {
         _id: String
         title: String
         address: String
-        groupId: String
     }
 
     type Organization {
@@ -26,12 +19,10 @@ const typeDefs = `
 
     type Query {
         points: [Point]
-        availableGroups: [Group]
-        organization: Organization
     }
 
     type Mutation {
-        createPoint(title: String!, address: String!, groupId: String): Point
+        createPoint(title: String!, address: String!): Point
 
         updatePoint(point: PointInput): Point
 

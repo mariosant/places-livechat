@@ -107,17 +107,6 @@ const Points = () => {
                 {point?.address}
               </div>
 
-              {point?.group && (
-                <div className="flex col-span-9 row-span-1 row-start-3 mt-2 overflow-x-hidden align-baseline whitespace-nowrap overflow-ellipsis text-body text">
-                  <div
-                    className="flex h-6 px-2 align-middle rounded bg-yellow100"
-                    title={`Assigned to group ${point.group.name}`}
-                  >
-                    {point?.group?.name}
-                  </div>
-                </div>
-              )}
-
               <div
                 path="/settings"
                 className="flex self-center justify-end flex-shrink col-span-1 row-span-2 row-start-1 opacity-0 group-hover:opacity-100"

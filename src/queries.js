@@ -4,10 +4,6 @@ query {
     _id
     title
     address
-    group {
-      _id
-      name
-    }
   }
 }
 `;
@@ -26,10 +22,6 @@ mutation createPoint($title: String!, $address: String!, $groupId: String) {
         _id
         title
         address
-        group {
-          _id
-          name
-        }
     }
 }
 `;
@@ -40,27 +32,6 @@ mutation updatePoint($point: PointInput) {
         _id
         title
         address
-        group {
-          _id
-        }
     }
 }
-`;
-
-export const availableGroups = `
-  query {
-    availableGroups {
-      _id
-      name
-    }
-  }
-`;
-
-export const organization = `
-  query {
-    organization {
-      _id
-      proPlan
-    }
-  }
 `;
