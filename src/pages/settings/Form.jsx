@@ -1,4 +1,3 @@
-import { useQuery } from "@urql/preact";
 import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";

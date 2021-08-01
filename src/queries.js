@@ -35,3 +35,12 @@ mutation updatePoint($point: PointInput) {
     }
 }
 `;
+
+export const me = `
+query {
+  me {
+    userId
+    organization
+  }
+}
+`;

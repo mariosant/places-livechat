@@ -1,5 +1,11 @@
-const isNil = require("lodash/isNil");
 const resolverRequiresAuth = require("../utils/resolverRequiresAuth");
+
+const me = async (_parent, _args, { auth }) => {
+  return {
+    userId: auth.account_id,
+    organization: auth.organization_id,
+  };
+};
 
 const points = async (_parent, _args, { auth, collections }) => {
   const data = await collections.points.find(
@@ -60,6 +66,7 @@ const deletePoint = async (_parent, { _id }, { auth, collections }) => {
 
 const resolvers = {
   Query: {
+    me: resolverRequiresAuth(me),
     points: resolverRequiresAuth(points),
   },
   Mutation: {

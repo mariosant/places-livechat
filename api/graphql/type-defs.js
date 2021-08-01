@@ -12,12 +12,13 @@ const typeDefs = `
         address: String
     }
 
-    type Organization {
-        _id: ID!
-        proPlan: Boolean
+    type Me {
+        userId: ID
+        organization: String
     }
 
     type Query {
+        me: Me
         points: [Point]
     }
 
