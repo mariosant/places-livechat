@@ -3,7 +3,7 @@ import { useForm, useController } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
 
-const { VITE_APP_GOOGLE_MAPS_KEY } = import.meta.env;
+const googleMapsKey = import.meta.env.VITE_APP_GOOGLE_MAPS_KEY;
 
 const Label = ({ children, ...props }) => {
   return (
@@ -57,7 +57,7 @@ const PlacesInput = ({
       ref={ref}
       defaultValue={defaultValue}
       autocomplete="off"
-      apiKey={VITE_APP_GOOGLE_MAPS_KEY}
+      apiKey={googleMapsKey}
       onPlaceSelected={onPlaceSelected}
       options={options}
       className={className}
