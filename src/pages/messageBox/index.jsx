@@ -7,7 +7,6 @@ import { points as pointsQuery } from "@/queries.js";
 const Page = () => {
   const [selected, setSelected] = useState(undefined);
   const [searchQuery, setSearchQuery] = useState("");
-  const [groupIdQuery] = useState("");
 
   const { sendPoint } = useMessagebox();
 
@@ -16,15 +15,11 @@ const Page = () => {
   const isFetched = Boolean(data);
   const points = data?.points ?? [];
 
-  const filteredPoints = points
-    .filter(
-      ({ address, title }) =>
-        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        address.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    .filter(({ group }) => {
-      return groupIdQuery === "" ? true : group?._id === groupIdQuery;
-    });
+  const filteredPoints = points.filter(
+    ({ address, title }) =>
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const selectPoint = (_id) => () => {
     if (selected === _id) {
@@ -72,13 +67,11 @@ const Page = () => {
           </p>
         )}
 
-        {isFetched &&
-          filteredPoints.length === 0 &&
-          (searchQuery !== "" || groupIdQuery !== "") && (
-            <span className="text-subtle">
-              No places found. Perhaps make a broader search?
-            </span>
-          )}
+        {isFetched && filteredPoints.length === 0 && searchQuery !== "" && (
+          <span className="text-subtle">
+            No places found. Perhaps make a broader search?
+          </span>
+        )}
       </div>
     </div>
   );

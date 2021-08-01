@@ -1,9 +1,6 @@
-import AutoComplete from "react-google-autocomplete";
-import { useForm, useController } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
-
-const googleMapsKey = import.meta.env.VITE_APP_GOOGLE_MAPS_KEY;
 
 const Label = ({ children, ...props }) => {
   return (
@@ -23,45 +20,6 @@ const Button = ({ children, ...props }) => {
     >
       {children}
     </button>
-  );
-};
-
-const PlacesInput = ({
-  control,
-  name,
-  defaultValue,
-  className,
-  rules = {},
-}) => {
-  const options = {
-    types: ["address"],
-    fields: ["formatted_address"],
-  };
-
-  const {
-    field: { ref, onChange },
-  } = useController({ name, control, defaultValue, rules });
-
-  const onPlaceSelected = ({ name, formatted_address }) => {
-    const event = {
-      target: {
-        value: formatted_address ?? name,
-      },
-    };
-
-    onChange(event);
-  };
-
-  return (
-    <AutoComplete
-      ref={ref}
-      defaultValue={defaultValue}
-      autocomplete="off"
-      apiKey={googleMapsKey}
-      onPlaceSelected={onPlaceSelected}
-      options={options}
-      className={className}
-    />
   );
 };
 
@@ -86,12 +44,12 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
     handleSubmit,
     register,
     setFocus,
-    control,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       title: point?.title,
       address: point?.address,
+      groupId: point?.group?._id,
     },
   });
 
@@ -127,19 +85,19 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
 
       <div className="mb-4">
         <Label>Address</Label>
-        <PlacesInput
-          control={control}
-          name="address"
-          defaultValue={point?.address}
+        <input
+          autocomplete="off"
+          placeholder="Some street 11, AB122, City, Country"
+          maxLength="200"
           className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
-          rules={{
+          {...register("address", {
             required: "Address is required",
             pattern: { value: /[\S]/g, message: "Address cannot be blank" },
             maxLength: {
               value: 200,
               message: "This is too long, it can be up to 200 characters.",
             },
-          }}
+          })}
         />
         {<Error>{errors?.address?.message}</Error>}
       </div>
