@@ -1,4 +1,5 @@
-import { useForm } from "react-hook-form";
+import AutoComplete from "react-google-autocomplete";
+import { useForm, useController } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
 
@@ -25,6 +26,45 @@ const Button = ({ children, ...props }) => {
   );
 };
 
+const PlacesInput = ({
+  control,
+  name,
+  defaultValue,
+  className,
+  rules = {},
+}) => {
+  const options = {
+    types: ["address"],
+    fields: ["formatted_address"],
+  };
+
+  const {
+    field: { ref, onChange },
+  } = useController({ name, control, defaultValue, rules });
+
+  const onPlaceSelected = ({ name, formatted_address }) => {
+    const event = {
+      target: {
+        value: formatted_address ?? name,
+      },
+    };
+
+    onChange(event);
+  };
+
+  return (
+    <AutoComplete
+      ref={ref}
+      defaultValue={defaultValue}
+      autocomplete="off"
+      apiKey={VITE_APP_GOOGLE_MAPS_KEY}
+      onPlaceSelected={onPlaceSelected}
+      options={options}
+      className={className}
+    />
+  );
+};
+
 const Error = ({ children, ...props }) => {
   return (
     <div className="text-sm text-red600" {...props}>
@@ -46,6 +86,7 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
     handleSubmit,
     register,
     setFocus,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -86,19 +127,19 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
 
       <div className="mb-4">
         <Label>Address</Label>
-        <input
-          autocomplete="off"
-          placeholder="Some street 11, AB122, City, Country"
-          maxLength="200"
+        <PlacesInput
+          control={control}
+          name="address"
+          defaultValue={point?.address}
           className="w-2/3 p-2 border rounded border-gray150 focus:border-blue500"
-          {...register("address", {
+          rules={{
             required: "Address is required",
             pattern: { value: /[\S]/g, message: "Address cannot be blank" },
             maxLength: {
               value: 200,
               message: "This is too long, it can be up to 200 characters.",
             },
-          })}
+          }}
         />
         {<Error>{errors?.address?.message}</Error>}
       </div>
