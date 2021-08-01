@@ -6,7 +6,8 @@
     "dev": "concurrently npm:ui:dev npm:server:dev",
     "ui:dev": "vite --host=0.0.0.0 --port=3000",
     "ui:build": "vite build",
-    "server:dev": "nodemon --watch index.js --watch api index.js"
+    "server:dev": "nodemon --watch index.js --watch api index.js",
+    "format": "prettier --write src/* api/*"
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
@@ -47,6 +48,7 @@
     "zustand": "^3.5.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.2"
   }
 }
