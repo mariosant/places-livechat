@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "preact/hooks";
 import useKeyPress from "@/lib/useKeypress";
 
+const { VITE_APP_GOOGLE_MAPS_KEY } = import.meta.env;
+
 const Label = ({ children, ...props }) => {
   return (
     <label className="block font-semibold" {...props}>
@@ -49,7 +51,6 @@ const Form = ({ onCancel, point, onSubmit: onSubmitCallback, ...props }) => {
     defaultValues: {
       title: point?.title,
       address: point?.address,
-      groupId: point?.group?._id,
     },
   });
 

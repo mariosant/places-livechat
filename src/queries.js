@@ -17,8 +17,8 @@ mutation deletePoint($_id: ID!) {
 `;
 
 export const createPoint = `
-mutation createPoint($title: String!, $address: String!, $groupId: String) {
-    createPoint(title: $title, address: $address, groupId: $groupId) {
+mutation createPoint($title: String!, $address: String!) {
+    createPoint(title: $title, address: $address) {
         _id
         title
         address

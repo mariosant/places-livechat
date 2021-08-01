@@ -1,12 +1,9 @@
-import useAuth from "@/lib/useAuth.js";
 import { useQuery } from "@urql/preact";
 import { me as meQuery } from "@/queries.js";
 import Points from "./Points.jsx";
 
 const Page = () => {
   const [{ data }] = useQuery({ query: meQuery });
-
-  console.log(data);
 
   return (
     <div className="flex flex-col mx-8 my-4 text-body">

@@ -1,7 +1,4 @@
-import {
-  createDetailsWidget,
-  createMessageBoxWidget,
-} from "@livechat/agent-app-sdk";
+import { createMessageBoxWidget } from "@livechat/agent-app-sdk";
 import { staticMapUrl } from "static-google-map";
 import create from "zustand";
 
