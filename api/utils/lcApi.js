@@ -1,5 +1,4 @@
 const axios = require("axios");
-const DataLoader = require("dataloader");
 
 const createClient = ({ token }) => {
   const client = axios.create({
@@ -12,13 +11,7 @@ const createClient = ({ token }) => {
 
   client.interceptors.response.use((response) => response.data);
 
-  const groupLoader = new DataLoader(async (keys) => {
-    const groups = await client.post("/action/list_groups", {});
-
-    return keys.map((key) => groups.find((group) => String(group.id) === key));
-  });
-
-  return { client, groupLoader };
+  return { client };
 };
 
 module.exports = createClient;
