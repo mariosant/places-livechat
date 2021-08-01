@@ -12,7 +12,7 @@ const Page = () => {
     <div className="flex flex-col mx-8 my-4 text-body">
       <div className="flex-grow">
         <h1 className="mb-2 text-2xl font-semibold text-heading">Places</h1>
-        <p className="mb-4 text-subtle">
+        <p className="mb-4">
           Please find your team's places below. Click the "Add new" button to
           add more.
         </p>
@@ -22,8 +22,8 @@ const Page = () => {
         </div>
       </div>
 
-      <details className="appearance-none text-subtle">
-        <summary className="mb-2 font-semibold cursor-pointer">
+      <details className="appearance-none">
+        <summary className="mb-2 cursor-pointer">
           Submit a csv/excel file for bulk upload.
         </summary>
         <div className="p-4 border border-gray100 rounded-large">
